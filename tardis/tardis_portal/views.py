@@ -101,7 +101,8 @@ from tardis.tardis_portal.auth import decorators as authz
 from tardis.tardis_portal.auth import auth_service
 from tardis.tardis_portal.shortcuts import render_response_index, \
     return_response_error, return_response_not_found, \
-    render_response_search, get_experiment_referer
+    render_response_search, render_error_message, \
+    get_experiment_referer
 from tardis.tardis_portal.metsparser import parseMets
 from tardis.tardis_portal.creativecommonshandler import CreativeCommonsHandler
 from tardis.tardis_portal.hacks import oracle_dbops_hack
@@ -739,11 +740,14 @@ def create_experiment(request,
 @authz.experiment_access_required
 def metsexport_experiment(request, experiment_id):
 
+    force_http_urls = 'force_http_urls' in request.GET
+
     from os.path import basename
     from django.core.servers.basehttp import FileWrapper
     from tardis.tardis_portal.metsexporter import MetsExporter
     exporter = MetsExporter()
-    filename = exporter.export(experiment_id)
+    filename = exporter.export(experiment_id,
+                               force_http_urls=force_http_urls)
     response = HttpResponse(FileWrapper(file(filename)),
                             mimetype='application')
     response['Content-Disposition'] = \
