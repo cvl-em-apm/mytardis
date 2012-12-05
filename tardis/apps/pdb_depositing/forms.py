@@ -1,3 +1,9 @@
+"""
+
+form widgets and related code adapted from:
+http://www.hoboes.com/Mimsy/hacks/replicating-djangos-admin/
+"""
+
 from django.forms import ModelForm
 from django.template.loader import render_to_string
 import django.forms as forms

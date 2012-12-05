@@ -79,10 +79,12 @@ Additional contact authors can be added by duplicating this section and
 increasing the ID number.
 """
     contact_author_id = models.IntegerField()
-    contact_author_salutation = models.CharField(max_length=15, null=True)
+    contact_author_salutation = models.CharField(max_length=15, null=True,
+                                                 blank=True)
     contact_author_first_name = models.CharField(max_length=30)
     contact_author_last_name = models.CharField(max_length=30)
-    contact_author_middle_name = models.CharField(max_length=30, null=True)
+    contact_author_middle_name = models.CharField(max_length=30, null=True,
+                                                  blank=True)
     contact_author_role = models.CharField(max_length=40, null=True)
     contact_author_organization_type = models.CharField(max_length=40)
     contact_author_email = models.CharField(max_length=50)
@@ -94,6 +96,24 @@ increasing the ID number.
     contact_author_fax_number = models.CharField(max_length=20, null=True)
     contact_author_phone_numer = models.CharField(max_length=20)
     PI_string = "_PI"
+
+    class Meta:
+        ordering = ["contact_author_last_name", "contact_author_first_name"]
+    
+    def __unicode__(self):
+        """
+        Formatting name with proper spacing and middle initial
+        """
+        test = lambda x: x if x != None and len(x) > 0 else ""
+        pad = lambda x: x + " " if test(x) != "" else ""
+        initial = lambda x: x[0] + " " if test(x) != "" else ""
+        name = "%s%s%s%s" % (
+            pad(self.contact_author_salutation),
+            pad(self.contact_author_first_name),
+            initial(self.contact_author_middle_name),
+            test(self.contact_author_last_name)
+            )
+        return name
 
 
 class StructuralGenomics(models.Model):
