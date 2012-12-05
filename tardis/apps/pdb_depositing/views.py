@@ -15,7 +15,8 @@ import tardis.apps.pdb_depositing.forms as app_forms
 @authz.datafile_access_required
 def view(request, dataset_file_id):
     form = app_forms.PDBAuthorTextForm()
-    context = Context({"form": form})
+    context = Context({"form": form,
+                       "dataset_file_id": dataset_file_id})
     return HttpResponse(render_response_index(
         request,
         "pdb_depositing/index.html",
@@ -33,9 +34,11 @@ def handlePopupAdd(request, dataset_file_id, addForm, field):
             if newObject:
                 return HttpResponse(
                     '<script type="text/javascript">' +
-                    'opener.dismissAddAnotherPopup(window, "%s", "%s");' +
-                    '</script>' % (escape(newObject._get_pk_val()),
-                                   escape(newObject)))
+                    'opener.dismissAddAnotherPopup(window, "%s", "%s");' %
+                    (escape(newObject._get_pk_val()),
+                                   escape(newObject))
+                     + '</script>'
+                )
     else:
         form = addForm()
     pageContext = {'form': form, 'field': field,
@@ -56,9 +59,9 @@ def add(request, dataset_file_id, fieldname):
                    "naturalSources": app_forms.NaturalSourceForm,
                    "syntheticSources": app_forms.SyntheticSourceForm,
                    "keywords": app_forms.KeywordForm,
-                   "biologicalAssemblies": app_forms.BiologicalAbssemblyForm,
+                   "biologicalAssemblies": app_forms.BiologicalAssemblyForm,
                    "methodsAndConditions": app_forms.MethodAndConditionForm,
                    "radiationSources": app_forms.RadiationSourceForm}
-    form = lookup_dict[fieldname]()
+    form = lookup_dict[fieldname]
 
     return handlePopupAdd(request, dataset_file_id, form, fieldname)

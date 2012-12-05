@@ -11,5 +11,5 @@ from django.conf.urls.defaults import patterns
 urlpatterns = patterns(
     'tardis.apps.pdb_depositing.views',
     (r'^view/(?P<dataset_file_id>\d+)/$', 'view'),
-    (r'^add/(?P<dataset_file_id>\d+)/(?P<fieldname>\d+)/$', 'add'),
+    (r'^add/(?P<dataset_file_id>\d+)/(?P<fieldname>\w+)/$', 'add'),
 )
