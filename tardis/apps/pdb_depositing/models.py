@@ -23,7 +23,7 @@ Enter the title for the structure
 Enter any additional features of this structure
 that will not be included elsewhere in the deposition
 """
-    authors = models.ManyToMany("ContactAuthor")
+    authors = models.ManyToManyField("ContactAuthor")
     Release_status_for_coordinates = models.CharField(
         max_length=15,
         choices=(
@@ -52,19 +52,19 @@ that will not be included elsewhere in the deposition
     # (e.g. Crystal Structure Analysis of the B-DNA)
     structure_details = models.TextField()
 
-    structuralGenomics = models.ManyToMany("StructuralGenomics")
-    structureAuthors = models.ManyToMany("StructureAuthor")
-    citationAuthors = models.ManyToMany("CitationAuthor")
-    citationArticles = models.ManyToMany("CitationArticle")
-    moleculeNames = models.ManyToMany("MoleculeName")
-    moleculeDetails = models.ManyToMany("MoleculeDetail")
-    gmoSources = models.ManyToMany("GMOSource")
-    naturalSources = models.ManyToMany("NaturalSource")
-    syntheticSources = models.ManyToMany("SyntheticSource")
-    keywords = models.ManyToMany("Keyword")
-    biologicalAssemblies = models.ManyToMany("BiologicalAssembly")
-    methodsAndConditions = models.ManyToMany("MethodAndCondition")
-    radiationSources = models.ManyToMany("RadiationSource")
+    structuralGenomics = models.ManyToManyField("StructuralGenomics")
+    structureAuthors = models.ManyToManyField("StructureAuthor")
+    citationAuthors = models.ManyToManyField("CitationAuthor")
+    citationArticles = models.ManyToManyField("CitationArticle")
+    moleculeNames = models.ManyToManyField("MoleculeName")
+    moleculeDetails = models.ManyToManyField("MoleculeDetail")
+    gmoSources = models.ManyToManyField("GMOSource")
+    naturalSources = models.ManyToManyField("NaturalSource")
+    syntheticSources = models.ManyToManyField("SyntheticSource")
+    keywords = models.ManyToManyField("Keyword")
+    biologicalAssemblies = models.ManyToManyField("BiologicalAssembly")
+    methodsAndConditions = models.ManyToManyField("MethodAndCondition")
+    radiationSources = models.ManyToManyField("RadiationSource")
 
 
 class ContactAuthor(models.Model):
@@ -78,7 +78,7 @@ Note: PI information should be always given.
 Additional contact authors can be added by duplicating this section and
 increasing the ID number.
 """
-    contact_author_id = models.IntegerField(unique=True)
+    contact_author_id = models.IntegerField()
     contact_author_salutation = models.CharField(max_length=15, null=True)
     contact_author_first_name = models.CharField(max_length=30)
     contact_author_last_name = models.CharField(max_length=30)
@@ -103,7 +103,7 @@ For structures from the structural genomics projects.
 Additional centers can be added by duplicating this section and increasing
 the ID number.
 """
-    SG_project_id = models.IntegerField(unique=True)
+    SG_project_id = models.IntegerField()
     SG_project_name = models.CharField(max_length=60)
     full_name_of_SG_center = models.CharField(max_length=60)
 
@@ -129,7 +129,7 @@ Enter author names for the publications associated with this deposition.
 1. For the primary citation
 2. For related citations  (if applicable)
 """
-    citation_author_id = models.IntegerField(unique=True)  # 0 for primary
+    citation_author_id = models.IntegerField()  # 0 for primary
     citation_author_name = models.CharField(max_length=30)
 
 
@@ -145,7 +145,7 @@ Additional citations can be added by duplicating section 2 and increasing
 the citation_id number. ID number should correspond to the ID of the
 citation authors given.
 """
-    citation_id = models.IntegerField(unique=True)  # 0 for primary
+    citation_id = models.IntegerField()  # 0 for primary
     # same as id for citation authors
     citation_journal_abbrev = models.CharField(max_length=20)
     citation_title = models.CharField(max_length=80)
@@ -198,7 +198,7 @@ Enter data in the genetically manipulated source category
 Additional information can be added by duplicating section 2 and increasing
 the ID number.
 """
-    Manipulated_entity_id = models.IntegerField(unique=True)
+    Manipulated_entity_id = models.IntegerField()
     Source_organism_scientific_name = models.CharField(max_length=60)
     Source_organism_gene = models.CharField(max_length=60)
     Source_organism_strain = models.CharField(max_length=60)
@@ -219,7 +219,7 @@ Enter data in the natural source category  (if applicable)
 Additional information can be added by duplicating section 2 and increasing
 the ID number.
 """
-    natural_source_entity_id = models.IntegerField(unique=True)
+    natural_source_entity_id = models.IntegerField()
     natural_source_scientific_name = models.CharField(max_length=60)
     natural_source_organism_strain = models.CharField(max_length=40)
     natural_source_details = models.CharField(max_length=80)
@@ -235,7 +235,7 @@ describe its source here.
 Additional information can be added by duplicating section 2 and increasing
 the ID number.
 """
-    synthetic_source_entity_id = models.IntegerField(unique=True)
+    synthetic_source_entity_id = models.IntegerField()
     synthetic_source_description = models.TextField(null=True)
 
 
@@ -290,7 +290,7 @@ Enter the crystallization conditions for each crystal
 Additional information can be added by duplicating this section and increasing
 the ID number.
 """
-    crystal_number = models.IntegerField(unique=True)
+    crystal_number = models.IntegerField()
     crystallization_method = models.CharField(max_length=50)
     crystallization_pH = models.CharField(max_length=10)
     crystallization_temperature = models.CharField(max_length=5)
@@ -307,7 +307,7 @@ and the wavelength for each diffraction.
 Additional information can be added by duplicating this section and increasing
 the ID number.
 """
-    radiation_experiment = models.IntegerField(unique=True)
+    radiation_experiment = models.IntegerField()
     radiation_source = models.CharField(max_length=40)
     radiation_source_type = models.CharField(max_length=80)
     radiation_wavelengths = models.CharField(max_length=10)

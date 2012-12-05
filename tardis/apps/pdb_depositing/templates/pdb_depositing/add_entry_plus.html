@@ -1,0 +1,14 @@
+<script type="text/javascript">
+var linktopopup = function() {
+    return '/apps/pdb_depositing/add/' + dataset_file_id + '/{{field}}';
+};
+</script>
+<a href="javascript:function(){return '/apps/pdb_depositing/add/' + dataset_file_id + '/{{field}}';}"
+   class="add-another"
+   id="add_id_{{field}}"
+   onclick="return showAddAnotherPopup(this);">
+  <img src="/static/admin/img/icon_addlink.gif"
+       width="10"
+       height="10"
+       alt="Add another" />
+</a>
