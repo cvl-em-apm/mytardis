@@ -269,4 +269,4 @@ urlpatterns = patterns(
 
 # Handle static files from /static
 urlpatterns += staticfiles_urlpatterns()
-                                                                          
+
