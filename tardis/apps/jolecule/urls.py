@@ -8,7 +8,12 @@ urls.py
 """
 from django.conf.urls.defaults import patterns, include, url
 
-jolecule_urls = patterns(
-    'tardis.apps.jolecule',
-    (r'^viewer/(?P<dataset_file_id>\d+)/$', 'viewer'),
+urlpatterns = patterns(
+    'tardis.apps.jolecule.views',
+    (r'^view/(?P<dataset_file_id>\d+)/$', 'view'),
+    (r'^getFile/(?P<dataset_file_id>\d+)/$', 'getFile'),
+    (r'^loadViews/(?P<dataset_file_id>\d+)/$', 'loadViews'),
+    (r'^saveView/(?P<dataset_file_id>\d+)/$', 'saveView'),
+    (r'^deleteView/(?P<dataset_file_id>\d+)/$', 'deleteView'),
+    
 )
