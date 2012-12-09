@@ -1,5 +1,4 @@
 from os import path
 
-JOLECULE_TEMPLATE_DIR = path.join(path.dirname(__file__), "templates")
-
-JOLECULE_STATICFILES = path.join(path.dirname(__file__), "static")
+JOLECULE_VIEWS_SCHEMA = "http://tardis.edu.au/schemas/apps/jolecule/views"
+JOLECULE_VIEWS_PARNAME = "joleculeViewJSON"
