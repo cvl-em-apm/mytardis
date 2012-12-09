@@ -24,7 +24,14 @@ class ProteinStructureFilter(object):
             structureFileTypes = [
                 "chemical/x-pdb",
             ]
-            return mimetype in structureFileTypes
+            correct_mime = mimetype in structureFileTypes
+
+            file_extension = fileInstance.filename.split(".")[-1]
+            valid_extensions = [
+                ".pdb",
+            ]
+            correct_extension = file_extension.lower() in valid_extensions
+            return correct_mime or correct_extension
 
             #DEBUG import pdb; pdb.set_trace()
         instance = kwargs.get("instance")
