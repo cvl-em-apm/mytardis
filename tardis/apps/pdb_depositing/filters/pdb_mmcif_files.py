@@ -26,7 +26,15 @@ class PDBandMMCIFFilter(object):
                 "chemical/x-pdb",
                 "chemical/x-mmcif",
             ]
-            return mimetype in structureFileTypes
+            correct_mime = mimetype in structureFileTypes
+
+            file_extension = fileInstance.filename.split(".")[-1]
+            valid_extensions = [
+                ".pdb",
+                ".mmcif"
+            ]
+            correct_extenstion = file_extension.lower() in valid_extensions
+            return correct_mime or correct_extenstion
 
         instance = kwargs.get("instance")
         if isStructureFile(instance):
