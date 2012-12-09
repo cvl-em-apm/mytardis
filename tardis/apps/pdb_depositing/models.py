@@ -8,6 +8,8 @@ models.py
 
 from django.db import models
 
+from tardis.tardis_portal.models.datafile import Dataset_File
+
 
 class PDBAuthorText(models.Model):
     """
@@ -23,18 +25,19 @@ Enter the title for the structure
 Enter any additional features of this structure
 that will not be included elsewhere in the deposition
 """
+    dataset_file = models.ForeignKey(Dataset_File)
     authors = models.ManyToManyField("ContactAuthor")
     Release_status_for_coordinates = models.CharField(
         max_length=15,
         choices=(
-            ("RELEASE_NOW", "Release now"),
+            ("RELEASE NOW", "Release now"),
             ("HOLD FOR RELEASE", "Hold for release"),)
         )
     # (e.g. RELEASE NOW)
     Release_status_for_structure_factor = models.CharField(
         max_length=15,
         choices=(
-            ("RELEASE_NOW", "Release now"),
+            ("RELEASE NOW", "Release now"),
             ("HOLD FOR RELEASE", "Hold for release"),
         )
     )
