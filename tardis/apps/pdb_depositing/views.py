@@ -1,17 +1,11 @@
-import django.forms as forms
 from django.template import Context
 from django.template.loader import render_to_string
 from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
-from django.utils.html import escape
-from django.shortcuts import render_to_response
 
 from tardis.tardis_portal.auth import decorators as authz
 from tardis.tardis_portal.shortcuts import render_response_index
 from tardis.tardis_portal.models.datafile import Dataset_File
-
-
-import tardis.apps.pdb_depositing.forms as app_forms
 
 
 def _collect_data(dataset_file_id):
@@ -89,49 +83,7 @@ def download(request, dataset_file_id):
             prefill),
         content_type='text/plain'
     )
-    response['Content-Disposition'] = 'attachment; filename="author-infor.text"'
+    response['Content-Disposition'
+    ] = 'attachment; filename="author-infor.text"'
     return response
-    
 
-def handlePopupAdd(request, dataset_file_id, addForm, field):
-    if request.method == "POST":
-        form = addForm(request.POST)
-        if form.is_valid():
-            try:
-                newObject = form.save()
-            except forms.ValidationError, error:
-                newObject = None
-            if newObject:
-                return HttpResponse(
-                    '<script type="text/javascript">' +
-                    'opener.dismissAddAnotherPopup(window, "%s", "%s");' %
-                    (escape(newObject._get_pk_val()),
-                                   escape(newObject))
-                     + '</script>'
-                )
-    else:
-        form = addForm()
-    pageContext = {'form': form, 'field': field,
-                   'dataset_file_id': dataset_file_id}
-    return render_to_response("pdb_depositing/add_entry_popup.html",
-                              pageContext)
-
-
-def add(request, dataset_file_id, fieldname):
-    lookup_dict = {"authors": app_forms.ContactAuthorForm,
-                   "structuralGenomics": app_forms.StructuralGenomicsForm,
-                   "structureAuthors": app_forms.StructureAuthorForm,
-                   "citationAuthors": app_forms.CitationAuthorForm,
-                   "citationArticles": app_forms.CitationArticleForm,
-                   "moleculeNames": app_forms.MoleculeNameForm,
-                   "moleculeDetails": app_forms.MoleculeDetailForm,
-                   "gmoSources": app_forms.GMOSourceForm,
-                   "naturalSources": app_forms.NaturalSourceForm,
-                   "syntheticSources": app_forms.SyntheticSourceForm,
-                   "keywords": app_forms.KeywordForm,
-                   "biologicalAssemblies": app_forms.BiologicalAssemblyForm,
-                   "methodsAndConditions": app_forms.MethodAndConditionForm,
-                   "radiationSources": app_forms.RadiationSourceForm}
-    form = lookup_dict[fieldname]
-
-    return handlePopupAdd(request, dataset_file_id, form, fieldname)
