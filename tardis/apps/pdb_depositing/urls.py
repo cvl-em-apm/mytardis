@@ -12,4 +12,5 @@ urlpatterns = patterns(
     'tardis.apps.pdb_depositing.views',
     (r'^view/(?P<dataset_file_id>\d+)/$', 'view'),
     (r'^add/(?P<dataset_file_id>\d+)/(?P<fieldname>\w+)/$', 'add'),
+    (r'^download/(?P<dataset_file_id>\d+)/$', 'download'),
 )

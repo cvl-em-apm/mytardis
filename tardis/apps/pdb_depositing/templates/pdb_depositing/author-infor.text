@@ -1,7 +1,4 @@
-{#
-This file is filled with metadata from experiments, datasets and datafiles
-Available data is filled with template tags, unavailable data is left empty.
-#}++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			GUIDELINES FOR USING THIS FILE
   1. All text should be entered in-between the quotation marks (" ")
 
@@ -50,18 +47,18 @@ Annotation staff will correspond with all contact authors provided about
 the deposition.
 
     Note: PI information should be always given.
-          
    
 1.  Information about the Principal Investigator (PI). 
-
-<contact_author_PI_id = "1 ">           !(1, 2)
+{% for contact in contact_authors %}
+{% if forloop.first %}
+<contact_author_PI_id = "{{ forloop.counter }}">           !(1, 2)
 <contact_author_PI_salutation = " ">     (Dr./Prof./Mr./Mrs./Ms.)
-<contact_author_PI_first_name = "{{first_name}}">      !(e.g. John)
-<contact_author_PI_last_name = "{{last_name}}">        !(e.g. Rodgers)
+<contact_author_PI_first_name = "{{contact.first_name}}">      !(e.g. John)
+<contact_author_PI_last_name = "{{contact.last_name}}">        !(e.g. Rodgers)
 <contact_author_PI_middle_name = "{{middle_name}}">         
 <contact_author_PI_role = "principal investigator/group leader">   !(or investigator/responsible scientist)
 <contact_author_PI_organization_type = "academic"> !(or commercial/government/other)
-<contact_author_PI_email = "{{email}}">        !(e.g. name@host.domain.country)      
+<contact_author_PI_email = "{{contact.email}}">        !(e.g. name@host.domain.country)      
 <contact_author_PI_address = " ">            !(e.g. 610 Taylor Road)
 <contact_author_PI_city = " ">               !(e.g. Piscataway)
 <contact_author_PI_State_or_Province = " ">   !(e.g.  New Jersey)
@@ -69,19 +66,17 @@ the deposition.
 <contact_author_PI_Country = " ">          !(e.g.  UNITED STATES)
 <contact_author_PI_fax_number = " ">
 <contact_author_PI_phone_numer = " ">
+{% else %}
 
 2. Information about other contact authors
-
-
 Additional contact authors can be added by duplicating this section and
 increasing the ID number.
 
-{% for contact in contacts %}
-<contact_author_id = "{{contact.id}}">  (integer: e.g. 2,3,4.  Number 1 is reserved for PI)
+<contact_author_id = "{{forloop.counter}}">  (integer: e.g. 2,3,4.  Number 1 is reserved for PI)
 <contact_author_salutation = " ">   
 <contact_author_first_name = "{{contact.first_name}}">      
 <contact_author_last_name = "{{contact.last_name}}">
-<contact_author_middle_name = "{{contact.middle_name}}">         
+<contact_author_middle_name = "{{middle_name}}">         
 <contact_author_role = " ">    
 <contact_author_organization_type = " ">  
 <contact_author_email = "{{contact.email}}">
@@ -92,6 +87,7 @@ increasing the ID number.
 <contact_author_Country = " ">          
 <contact_author_fax_number = " ">
 <contact_author_phone_numer = " ">
+{% endif %}
 {% endfor %}
 
 
@@ -138,11 +134,10 @@ that will not be included elsewhere in the deposition
 Enter authors of the deposited structures (e.g. Surname, F.M.) 
 Additional authors can be added by duplicating this token.
 
-<structure_author_name = " ">   !(e.g.  Surname, F.M.)
-{% for author in structure_authors %}
+{% for author in authors %}
 <structure_author_name = "{{author}}">
 {% endfor %}
-<structure_author_name = " ">
+<structure_author_name = " ">   !(e.g.  Surname, F.M.)
 <structure_author_name = " ">
 
 
@@ -377,11 +372,11 @@ and the wavelength for each diffraction.
 
 1. For experiment 1:
 <radiation_experiment = "1 ">      !(e.g. 1, 2, ...)
-<radiation_source = "{{radiation_source}}">           !(e.g. SYNCHROTRON, ROTATING ANODE ...)
-<radiation_source_type = " ">      !(e.g. NSLS BEAMLINE X8C ...)
+<radiation_source = "{{diffractometerType}}">           !(e.g. SYNCHROTRON, ROTATING ANODE ...)
+<radiation_source_type = "BEAMLINE {{beamline}}">      !(e.g. NSLS BEAMLINE X8C ...)
 <radiation_wavelengths= " ">       (e.g. 1.502 ...)
 <radiation_detector = " ">         (e.g. CCD/AREA DETECTOR/IMAGE PLATE ...)
-<radiation_detector_type= " ">     (e.g. SIEMENS-NICOLET/RIGAKU RAXIS ...)
+<radiation_detector_type= "{{xraySource}}">     (e.g. SIEMENS-NICOLET/RIGAKU RAXIS ...)
 <radiation_detector_details = " ">    (e.g. mirrors...)
 <data_collection_date = " ">             (e.g. 2004-11-27)
 <data_collection_temperature = " ">      (e.g. 100 for crystal  1:)
