@@ -89,8 +89,9 @@ def _get_views(dataset_file_id):
 
 def loadViews(request, dataset_file_id):
     views = _get_views(dataset_file_id)
-    returnstring = simplejson.dumps([simplejson.loads(view.get())
-                                         for view in views])
+    viewsAsJSON = [simplejson.loads(view.get()) for view in views]
+    viewsAsJSON.sort(key=lambda x: int(x["order"]))
+    returnstring = simplejson.dumps(viewsAsJSON)
     return HttpResponse(returnstring, mimetype='text/javascript')
 
 
