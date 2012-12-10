@@ -30,8 +30,8 @@ class PDBandMMCIFFilter(object):
 
             file_extension = fileInstance.filename.split(".")[-1]
             valid_extensions = [
-                ".pdb",
-                ".mmcif"
+                "pdb",
+                "mmcif"
             ]
             correct_extenstion = file_extension.lower() in valid_extensions
             return correct_mime or correct_extenstion
