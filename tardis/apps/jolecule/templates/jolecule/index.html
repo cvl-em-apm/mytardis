@@ -1,0 +1,36 @@
+    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}js/jole2/static/mobile.css" />
+
+    <script type="text/javascript" src="{{STATIC_URL}}js/jole2/js/jquery.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}js/jole2/js/jquery.scrollTo.js"></script>
+
+    <script type="text/javascript" src="{{STATIC_URL}}js/jole2/js/util.js"></script> 
+    <script type="text/javascript" src="{{STATIC_URL}}js/jole2/js/v3.js"></script> 
+    <script type="text/javascript" src="{{STATIC_URL}}js/jole2/js/canvaswidget.js"></script> 
+    <script type="text/javascript" src="{{STATIC_URL}}js/jole2/js/protein.js"></script> 
+    <script type="text/javascript" src="{{STATIC_URL}}js/jole2/js/proteindisplay.js"></script> 
+    <script type="text/javascript" src="{{STATIC_URL}}js/jole2/js/embedjolecule.js"></script> 
+    <script type="text/javascript" src="{{STATIC_URL}}js/jole2/js/dataserver.js"></script> 
+
+
+    <script>
+      user = 'public'; // need this public variable to tag views
+
+      $(document).ready(
+        function() {
+
+          register_global_animation_loop(
+            new EmbedJolecule(
+              '{{dataset_file_id}}', // pdb_id
+              '',  // view_id
+              '#mobile-body', // html tag
+              new BDPDataServer('{{dataset_file_id}}'), // type of data server
+              150, // height of the actual protein viewing area
+              'Embedded PDB' // Loading msg
+            )
+          );          
+        }
+      );
+    </script>
+<div style="height:auto;margin-bottom:5px;">
+    <div id="mobile-body" style="width:auto;height:650px;"></div>
+</div>
