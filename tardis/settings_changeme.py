@@ -195,6 +195,7 @@ INSTALLED_APPS = (
     'djkombu',
     'bootstrapform',
     'mustachejs',
+    'django_tables2',
     )
 
 JASMINE_TEST_DIRECTORY = path.abspath(path.join(path.dirname(__file__),
