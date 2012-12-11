@@ -40,10 +40,11 @@ setup(
         'iso8601',      # ISO8601 time formatting
         'pyoai',        # For OAI-PMH provider
         'Wand==0.1.10',    # For image file conversion
-        'django-mustachejs', # For client-side Mustache template helpers
-        'pystache', # For server-side Mustache rendering to aid SEO
-        'rdflib',    # For ANZSRCO parsing for ANZSRC FoR codes
-        'rdfextras', # For parsing n3 ANZSRCO
+        'django-mustachejs==0.6.0', # For client-side Mustache template helpers
+        'pystache==0.5.3', # For server-side Mustache rendering to aid SEO
+        'rdflib==3.2.3',    # For ANZSRCO parsing for ANZSRC FoR codes
+        'rdfextras==0.3', # For parsing n3 ANZSRCO
+        'django-tables2==0.13.0',
         ],
     dependency_links = [
         'https://github.com/dahlia/wand/tarball/warning-bugfix#egg=Wand-0.1.10',
