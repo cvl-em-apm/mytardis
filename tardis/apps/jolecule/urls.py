@@ -15,5 +15,4 @@ urlpatterns = patterns(
     (r'^loadViews/(?P<dataset_file_id>\d+)/$', 'loadViews'),
     (r'^saveView/(?P<dataset_file_id>\d+)/$', 'saveView'),
     (r'^deleteView/(?P<dataset_file_id>\d+)/$', 'deleteView'),
-    
 )
