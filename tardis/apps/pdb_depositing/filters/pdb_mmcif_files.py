@@ -13,7 +13,7 @@ class PDBandMMCIFFilter(object):
 
     namespace = "http://tardis.edu.au/schemas/apps/" +\
                 "pdb_depositing/pdb_or_mmcif_file"
-    name = "Prepare protein structure file fo PDB submission"
+    name = "Prepare protein structure file for PDB submission"
 
     def __init__(self):
         pass
