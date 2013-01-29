@@ -1,0 +1,3 @@
+[submodule "tardis/apps/pdb-depositing"]
+	path = tardis/apps/pdb-depositing
+	url = git@github.com:grischa/mytardis-pdb-depositing.git
