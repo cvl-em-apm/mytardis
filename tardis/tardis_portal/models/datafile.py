@@ -1,6 +1,9 @@
 import hashlib
 from magic import Magic
 from os import path
+import os
+import errno
+import subprocess
 from urllib2 import build_opener
 from urlparse import urlparse
 
@@ -9,6 +12,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
 from django.db.models.signals import pre_save
+from django.core.files import File
 from django.core.files.storage import default_storage
 from django.utils import _os
 
@@ -147,13 +151,61 @@ class Dataset_File(models.Model):
         return self._get_file_getter()
 
     def _get_file_getter(self):
+        """
+        returns a function that returns a File object to the Datafile.
+
+        If SquashFS is used and installed, the file can be contained
+        in a SquashFS archive which is mounted on demand.
+
+        SquashFS files need to have their url set as
+        $PATH_TO_SQUASH_ARCHIVE/$PATH_IN_ARCHIVE
+        where the SquashFS archive ends in a common file ending that
+        can be customised with settings.SQUASHFS_TAG.
+
+        The default mounter is squashfuse, which can be found here:
+        https://github.com/vasi/squashfuse
+
+        SquashFS default settings:
+        SQUASHFS_ENABLED = False
+        SQUASHFS_TAG = ".squashfs"
+        SQUASHFSMOUNT_CMD = "/usr/local/bin/squashfuse"
+        """
         if self.is_local():
             theUrl = self.url
-            def getter():
-                return default_storage.open(theUrl)
-            return getter
+
+            # tag that identifies squashfs-contained files
+            squashfs_tag = getattr(settings, "SQUASHFS_TAG", ".squashfs")
+            if getattr(settings, "SQUASHFS_ENABLED", False) and \
+               squashfs_tag + "/" in theUrl:
+                fsp = getattr(settings, "FILE_STORE_PATH", "/tmp")
+                # reconstruct archive path
+                tag_pos = theUrl.find(squashfs_tag)
+                squashfs_archive_base = theUrl[:tag_pos]
+                squashfs_archive_name = os.path.join(
+                    fsp, squashfs_archive_base + squashfs_tag)
+                rel_file_path = theUrl[tag_pos + len(squashfs_tag) + 1:]
+                squashmount_cmd = getattr(settings,
+                                          "SQUASHFSMOUNT_CMD",
+                                          "/usr/local/bin/squashfuse")
+                mount_point = os.path.join(fsp, squashfs_archive_base + "-mnt")
+                try:
+                    os.makedirs(mount_point)
+                except OSError as exc:
+                    if exc.errno == errno.EEXIST and \
+                       os.path.isdir(mount_point):
+                        pass
+                    else:
+                        raise
+                mounted_url = path.join(mount_point, rel_file_path)
+                if not os.path.isfile(mounted_url):
+                    subprocess.call([squashmount_cmd,
+                                     squashfs_archive_name, mount_point])
+                return lambda: File(open(mounted_url, 'r'))
+            else:
+                return lambda: default_storage.open(theUrl)
         else:
             theUrl = self.get_actual_url()
+
             def getter():
                 return get_privileged_opener().open(theUrl)
             return getter
