@@ -416,3 +416,14 @@ def get_git_version():
     return info
 
 MYTARDIS_VERSION = get_git_version()
+
+ARCHIVE_FILE_MAPPERS = {
+#    'test': ('tardis.apps.example.ExampleMapper',),
+#    'test2': ('tardis.apps.example.ExampleMapper', {'foo': 1})
+    }
+
+# Site's default archive organization (i.e. path structure)
+DEFAULT_ARCHIVE_ORGANIZATION = 'classic'
+
+# Site's preferred archive types, with the most preferred first
+DEFAULT_ARCHIVE_FORMATS = ['zip', 'tar']
