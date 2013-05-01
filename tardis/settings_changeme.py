@@ -383,7 +383,19 @@ To use filepicker, please also get an API key at http://filepicker.io
 '''
 #FILEPICKER_API_KEY = "YOUR KEY"
 
-DEEP_DATASET_STORAGE = False
+ARCHIVE_FILE_MAPPERS = {
+    'deep-storage': (
+        'tardis.apps.deep_storage_download_mapper.mapper.deep_storage_mapper',
+    ),
+}
+
+# Site's default archive organization (i.e. path structure)
+DEFAULT_ARCHIVE_ORGANIZATION = 'deep-storage'
+
+# Site's preferred archive types, with the most preferred first
+DEFAULT_ARCHIVE_FORMATS = ['zip', 'tar']
+
+DEEP_DATASET_STORAGE = True
 '''
 Set to true if you want to preserve folder structure on "stage_file" ingest,
 eg. via the METS importer.
