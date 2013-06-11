@@ -349,8 +349,6 @@ CELERYBEAT_SCHEDULE = {
       },
     }
 
-CELERY_IMPORTS = ('tardis.tardis_portal.views',)
-
 djcelery.setup_loader()
 
 DEFAULT_LOCATION = "local"
@@ -432,18 +430,6 @@ def get_git_version():
     return info
 
 MYTARDIS_VERSION = get_git_version()
-
-ARCHIVE_FILE_MAPPERS = {
-#    'test': ('tardis.apps.example.ExampleMapper',),
-#    'test2': ('tardis.apps.example.ExampleMapper', {'foo': 1})
-    }
-
-# Site's default archive organization (i.e. path structure)
-DEFAULT_ARCHIVE_ORGANIZATION = 'classic'
-
-# Site's preferred archive types, with the most preferred first
-DEFAULT_ARCHIVE_FORMATS = ['zip', 'tar']
-
 # If you want enable user agent sensing, copy this to settings.py
 # and uncomment it.
 #
