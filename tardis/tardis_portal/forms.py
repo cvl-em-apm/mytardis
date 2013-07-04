@@ -80,7 +80,7 @@ def getAuthMethodChoices():
 
 
 class LoginForm(AuthenticationForm):
-    authMethod = forms.CharField()
+    # authMethod = forms.CharField()
 
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
