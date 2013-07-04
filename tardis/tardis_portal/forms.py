@@ -89,11 +89,11 @@ class LoginForm(AuthenticationForm):
                              label="Username",
                              max_length=75)
 
-        authMethods = ((None, "Any"),) + getAuthMethodChoices()
-        self.fields['authMethod'] = \
-            forms.CharField(required=True,
-                            widget=forms.Select(choices=authMethods),
-                            label='Authentication Method')
+        # authMethods = ((None, "Any"),) + getAuthMethodChoices()
+        # self.fields['authMethod'] = \
+        #     forms.CharField(required=True,
+        #                     widget=forms.Select(choices=authMethods),
+        #                     label='Authentication Method')
 
 
 attrs_dict = {'class': 'required'}
