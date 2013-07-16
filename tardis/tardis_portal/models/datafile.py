@@ -17,7 +17,7 @@ IMAGE_FILTER = (Q(mimetype__startswith='image/') & \
 
 class Dataset_File(models.Model):
     """Class to store meta-data about a file.  The physical copies of a
-    file are described by distinct Replica instances. 
+    file are described by distinct Replica instances.
 
     :attribute dataset: the foreign key to the
        :class:`tardis.tardis_portal.models.Dataset` the file belongs to.
@@ -68,7 +68,7 @@ class Dataset_File(models.Model):
             raise Exception('Every Datafile requires a file size')
         else:
             super(Dataset_File, self).save(*args, **kwargs)
-        
+
     def get_size(self):
         return self.size
 
@@ -112,19 +112,19 @@ class Dataset_File(models.Model):
             return replica.get_download_url()
         else:
             return None
-        
+
     def get_file(self):
         return self.get_preferred_replica().get_file()
-        
+
     def get_absolute_filepath(self):
         return self.get_preferred_replica().get_absolute_filepath()
 
     def get_file_getter(self):
         return self.get_preferred_replica().get_file_getter()
-        
+
     def is_local(self):
         return self.get_preferred_replica().is_local()
-        
+
     def get_preferred_replica(self, verified=None):
         """Get the Datafile replica that is the preferred one for download.
         This entails fetching all of the Replicas and ordering by their
@@ -137,44 +137,51 @@ class Dataset_File(models.Model):
             replicas = Replica.objects.filter(datafile=self)
         else:
             replicas = Replica.objects.filter(datafile=self, verified=verified)
-        for r in replicas: 
+        for r in replicas:
             if not p or \
                     p.location.get_priority() < r.location.get_priority():
                 p = r
         # A datafile with no associated replicas is broken.
         if verified == None and not p:
-            logger.error('Ooops! - Dataset_File %s has no replicas: %s', 
-                         self.id, self)            
+            logger.error('Ooops! - Dataset_File %s has no replicas: %s',
+                         self.id, self)
             if hasattr(settings, 'DEBUG') and settings.DEBUG:
                 raise ValueError('Dataset_File has no replicas')
         return p
 
     def has_image(self):
         from .parameters import DatafileParameter
-        
+
         if self.is_image():
             return True
 
         # look for image data in parameters
         pss = self.getParameterSets()
-        
+
         if not pss:
             return False
-        
+
         for ps in pss:
             dps = DatafileParameter.objects.filter(\
             parameterset=ps, name__data_type=5,\
             name__units__startswith="image")
-            
+
             if len(dps):
                 return True
-        
+
         return False
 
     def is_image(self):
-        return self.get_mimetype().startswith('image/') \
-            and not self.get_mimetype() == 'image/x-icon'
-            
+        '''
+        returns True if it's an image and not an x-icon and not an img
+        the image/img mimetype is made up though and may need revisiting if
+        there is an official img mimetype that does not refer to diffraction
+        images
+        '''
+        mimetype = self.get_mimetype()
+        return mimetype.startswith('image/') \
+            and not mimetype in ('image/x-icon', 'image/img')
+
     def get_image_data(self):
         from .parameters import DatafileParameter
 
@@ -197,14 +204,13 @@ class Dataset_File(models.Model):
                 preview_image_par = dps[0]
 
         if preview_image_par:
-            file_path = path.abspath(path.join(settings.FILE_STORE_PATH,
+            file_path = path.abspath(path.join(settings.METADATA_STORE_PATH,
                                                preview_image_par.string_value))
 
-            from django.core.servers.basehttp import FileWrapper
             preview_image_file = file(file_path)
-            
+
             return preview_image_file
-            
+
         else:
             return None
 
@@ -213,4 +219,3 @@ class Dataset_File(models.Model):
         return Experiment.objects.filter(\
                   datasets=self.dataset,
                   public_access=Experiment.PUBLIC_ACCESS_FULL).exists()
-
