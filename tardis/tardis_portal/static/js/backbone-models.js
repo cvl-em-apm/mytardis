@@ -158,8 +158,6 @@ var MyTardis = (function(){
             view = new MyTardis.DatasetTile({ 'model': model });
             view.render();
             tiles[view.model.id] = view;
-	    view.model.bind("fetchme", function(){this.fetch();});
-	    view.model.trigger("fetchme");
             view.on('tile:copy', _.bind(function(tile, destTiles) {
 		$(tile.el).detach();
 		this.render();
@@ -236,19 +234,14 @@ var MyTardis = (function(){
 	},
 	templateWrapper: {
             'dataset_datafiles_badge': function() {
-		if (this.hasOwnProperty('datafiles')) {
-		    var file_count = this.datafiles.length;
-		} else {
-		    var file_count = null;
-		}
 		return Mustache.to_html(
 		    Mustache.TEMPLATES['tardis_portal/badges/datafile_count'],
 		    {
 			'title': _.sprintf(
 			    "Contains %s file%s",
-			    file_count,
-			    file_count == 1 ? '' : 's'),
-			'count': file_count
+			    this.file_count,
+			    this.file_count == 1 ? '' : 's'),
+			'count': this.file_count
 		    },
 		    Mustache.TEMPLATES
 		);
