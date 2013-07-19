@@ -42,5 +42,15 @@ def user_details_processor(request):
     staging = True if get_full_staging_path(username) else False
     return {'username': username,
             'is_authenticated': is_authenticated,
-            'is_superuser': is_superuser, 
+            'is_superuser': is_superuser,
             'has_staging_access': staging}
+
+
+def google_analytics(request):
+    '''
+    adds context for portal_template.html
+    '''
+    ga_id = getattr(settings, 'GOOGLE_ANALYTICS_ID', '')
+    ga_host = getattr(settings, 'GOOGLE_ANALYTICS_HOST', '')
+    return {'ga_id': ga_id,
+            'ga_host': ga_host}
